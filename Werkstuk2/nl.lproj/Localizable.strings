@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  Werkstuk2
+
+  Created by Felix Struelens on 18/08/18.
+  Copyright © 2018 Felix Struelens. All rights reserved.
+*/
+"Update" = "Update";
+"Last update" = "Laatste update";
+"error GET" = "GET error";
+"no data" = "geen data";
+"can not read data" = "kan data niet lezen";
+"available stands: " = "Beschikbare standen: ";
+"available bikes: " = "Bischikbare fietsen: ";
+"no name available" = "Geen naam beschikbaar";
+"no status available" = "Geen status beschikbaar";
+"no address available" = "Geen adres beschikbaar";
+"no bike stands data available" = "Geen fiets standen beschikbaar";
+"no bike data available" = "Geen fiets data beschikbaar";
