@@ -21,14 +21,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func buttonAction(_ sender: Any) {
         dispatchGroup.enter()
-        self.label.text = "Last update: " + vandaag()
+        self.label.text = NSLocalizedString("Last update", comment: "") + ": " + vandaag()
+        self.button.setTitle(NSLocalizedString("Update", comment: ""), for: .normal)
         self.showData(dataSet: self.annotations)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.label.text = "Last update:"  + vandaag()
+        self.label.text = NSLocalizedString("Last update:", comment: "")  + vandaag()
         
         dispatchGroup.enter()
         getJSON()
@@ -37,11 +38,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         showData(dataSet: annotations)
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        let center = CLLocationCoordinate2D(latitude: (view.annotation?.coordinate.latitude)!, longitude: (view.annotation?.coordinate.longitude)!)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+        
+        mapView.setRegion(region, animated: true)
+    }
+    
     func showData(dataSet: [Annotation]){
         let allAnnotations = self.map.annotations
         self.map.removeAnnotations(allAnnotations)
         for annotation in dataSet {
             map.addAnnotation(annotation)
+            map.selectAnnotation(annotation, animated: true)
         }
         dispatchGroup.leave()
     }
@@ -68,35 +77,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let task = session.dataTask(with: urlRequest) {
             (data, response, error) in
             
-            var latitude:Double = 0.0
-            var longitude:Double = 0.0
-            
             guard error == nil else {
-                print("error GET")
+                print(NSLocalizedString("error GET", comment: ""))
                 print(error!)
                 return
             }
             guard let responseData = data else {
-                print("geen data beschikbaar")
+                print(NSLocalizedString("no data", comment: ""))
                 return
             }
             guard let stations = try? JSONSerialization.jsonObject(with: responseData, options: []) as! [AnyObject] else {
-                print("kan data niet lezen")
+                print(NSLocalizedString("can not read data", comment: ""))
                 return
             }
             
             for value in stations {
-                let status = value["status"] as? String
-                let name = value["name"] as? String
-                for (positions,coordinates) in (value["position"] as? NSDictionary)!{
-                    if positions as! String == "lat"{
-                        latitude = coordinates as! Double
+                let bikes = NSLocalizedString("available bikes: ", comment: "")
+                let name = value["name"] as? String ?? NSLocalizedString("no name available", comment: "")
+                let status = value["status"] as? String ?? NSLocalizedString("no status available", comment: "")
+                let available_bikes = value["available_bikes"] as? String ?? NSLocalizedString("no bike data available", comment: "")
+                var lat:Double = 0.0
+                var lng:Double = 0.0
+                for (pos,posValue) in (value["position"] as? NSDictionary)!{
+                    if pos as! String == "lat"{
+                        lat = posValue as! Double
                     }
-                    if positions as! String == "lng"{
-                        longitude = coordinates as! Double
+                    if pos as! String == "lng"{
+                        lng = posValue as! Double
                     }
                 }
-                let annotation = Annotation(title: name!, subtitle: status!, coordinate: CLLocationCoordinate2DMake(latitude,longitude))
+                let annotation = Annotation(title: name, subtitle: status + " - " + bikes + available_bikes, coordinate: CLLocationCoordinate2DMake(lat,lng))
                 self.annotations.append(annotation)
             }
             self.dispatchGroup.leave()
