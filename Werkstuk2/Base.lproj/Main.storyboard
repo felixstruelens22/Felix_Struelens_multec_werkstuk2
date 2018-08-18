@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +14,56 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Werkstuk2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="3Cl-RW-7fD">
+                                <rect key="frame" x="0.0" y="81" width="414" height="655"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNa-Ng-bnW">
+                                <rect key="frame" x="20" y="35" width="51" height="30"/>
+                                <state key="normal" title="Update"/>
+                                <connections>
+                                    <action selector="buttonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cFm-yW-YJW"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oDY-BH-9Lc">
+                                <rect key="frame" x="283" y="45" width="111" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="111" id="h11-MR-FSo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="3Cl-RW-7fD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="61" id="0al-oY-wPZ"/>
+                            <constraint firstItem="3Cl-RW-7fD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8if-e3-dOa"/>
+                            <constraint firstItem="KNa-Ng-bnW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="AOl-9C-zz0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KNa-Ng-bnW" secondAttribute="trailing" constant="343" id="HF7-XJ-UI0"/>
+                            <constraint firstItem="KNa-Ng-bnW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="XVK-hg-dhR"/>
+                            <constraint firstItem="3Cl-RW-7fD" firstAttribute="top" secondItem="KNa-Ng-bnW" secondAttribute="bottom" constant="16" id="dZ9-Le-8L7"/>
+                            <constraint firstItem="oDY-BH-9Lc" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="lru-EA-osB"/>
+                            <constraint firstItem="3Cl-RW-7fD" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="pym-ib-xDb"/>
+                            <constraint firstAttribute="trailing" secondItem="3Cl-RW-7fD" secondAttribute="trailing" id="uDU-RL-I7P"/>
+                            <constraint firstItem="oDY-BH-9Lc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="wGZ-wi-47f"/>
+                            <constraint firstItem="oDY-BH-9Lc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="25" id="ytd-qg-0TG"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="button" destination="KNa-Ng-bnW" id="hSR-sv-AZc"/>
+                        <outlet property="label" destination="oDY-BH-9Lc" id="h89-jY-ccX"/>
+                        <outlet property="map" destination="3Cl-RW-7fD" id="2Vy-MP-dZI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.23188405797103" y="132.88043478260872"/>
         </scene>
     </scenes>
 </document>
