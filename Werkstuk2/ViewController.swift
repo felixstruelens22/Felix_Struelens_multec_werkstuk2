@@ -8,10 +8,13 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     var annotations = [Annotation]()
+    
+    var locationManager = CLLocationManager()
     
     let dispatchGroup = DispatchGroup()
     
@@ -29,6 +32,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager.requestAlwaysAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+        }
+        
         self.label.text = NSLocalizedString("Last update:", comment: "")  + vandaag()
         
         dispatchGroup.enter()
@@ -38,9 +47,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         showData(dataSet: annotations)
     }
     
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        let center = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+        
+        mapView.setRegion(region, animated: true)
+    }
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let center = CLLocationCoordinate2D(latitude: (view.annotation?.coordinate.latitude)!, longitude: (view.annotation?.coordinate.longitude)!)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
         
         mapView.setRegion(region, animated: true)
     }
@@ -50,7 +66,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.map.removeAnnotations(allAnnotations)
         for annotation in dataSet {
             map.addAnnotation(annotation)
-            map.selectAnnotation(annotation, animated: true)
         }
         dispatchGroup.leave()
     }
